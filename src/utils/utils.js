@@ -43,7 +43,7 @@ export function getGridTypeList() {
   return GRID_TYPE_LIST;
 }
 
-export function checkWinner(matrix) {
+export function checkWinner(matrix, cb) {
   const combinations = {
     'rows': {},
     'columns': {},
@@ -67,7 +67,7 @@ export function checkWinner(matrix) {
         combinations[type].state.user = matrix[i][j].user;
         combinations[type].state.count++;
       } else {
-        if (combinations[type].state.user === matrix[i][j].user) {
+        if (combinations[type].state.user.label === matrix[i][j].user.label) {
           combinations[type].state.count++;
           if (combinations[type].state.count === matrix[0].length)  {
             return combinations[type].state;
@@ -99,22 +99,22 @@ export function checkWinner(matrix) {
       //ROWS
       let result = counter(combinations, 'rows', i, j);
 
-      if(result) { console.log('rows'); return showWiiner(result); }
+      if(result) { console.log('rows'); return result; }
 
       //COLUMNS
       result = counter(combinations, 'columns', j, i);
 
-      if(result) { console.log('COLUMNS'); return showWiiner(result); }
+      if(result) { console.log('COLUMNS'); return result; }
 
       //DIAGONAL1
       if (i === j) {
         result = counter(combinations, 'diagonal1', i, j);
-        if(result) { console.log('diag1'); return showWiiner(result); }
+        if(result) { console.log('diag1'); return result; }
       }
       //DIAGONAL2
       if (j === (matrix[i].length - i - 1)) {
         result = counter(combinations, 'diagonal2', i, j);
-        if(result) { console.log('diag2'); return showWiiner(result); }
+        if(result) { console.log('diag2'); return result; }
       }
     }
   }

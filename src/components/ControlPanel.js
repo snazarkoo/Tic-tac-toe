@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { changeGridSize, resetGame } from '../actions/gameActions';
 import * as utils from '../utils/utils';
 
-const ControlPanel = ({ onChangeGridSize, currentUser, onResetGame, size }) => {
+const ControlPanel = ({ onChangeGridSize, currentUser, onResetGame, size, gameStatus }) => {
   let onTodoClick = (event) => {
     onResetGame();
     onChangeGridSize(parseInt(event.target.value));
@@ -21,11 +21,14 @@ const ControlPanel = ({ onChangeGridSize, currentUser, onResetGame, size }) => {
       </select>
       <div>
         <div>
-          <span className={currentUser === 'X' ? 'selected' : ''}>Player X</span>
+          <span className={currentUser.label === 'X' ? 'selected' : ''}>Player X</span>
         </div>
         <div>
-          <span className={currentUser === 'O' ? 'selected': ''}>Player O</span>
+          <span className={currentUser.label === 'O' ? 'selected': ''}>Player O</span>
         </div>
+      </div>
+      <div>
+        {gameStatus}
       </div>
     </div>
   );
@@ -34,15 +37,30 @@ const ControlPanel = ({ onChangeGridSize, currentUser, onResetGame, size }) => {
 ControlPanel.propTypes = {
   onChangeGridSize: PropTypes.func.isRequired,
   onResetGame: PropTypes.func.isRequired,
-  currentUser: PropTypes.string.isRequired,
+  currentUser: PropTypes.object.isRequired,
   size: PropTypes.number.isRequired
 };
 
 function mapStateToProps(state) {
   return {
     currentUser: state.user,
-    size: state.gridSize
+    size: state.gridSize,
+    gameStatus: getGameStatus(state.step, state.gridSize, state.user)
   };
+}
+
+function getGameStatus(step, size, user) {
+  const cellNumbers = Math.pow(size, 2);
+  if (user.isWinner) {
+    return `${user.label} won`;
+  }
+  if (step === cellNumbers) {
+    return 'Draw';
+  }
+  if (step) {
+    return `${user.label} turn`;
+  }
+  return 'Start the game';
 }
 
 function mapDispatchToProps(dispatch) {

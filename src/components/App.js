@@ -1,13 +1,13 @@
 import React from 'react';
 import ControlPanel from './ControlPanel';
-import Grid from './Grid';
+import GridPanel from "./GridPanel";
 
 class App extends React.Component {
   render() {
     return (
       <div>
         <ControlPanel />
-        <Grid />
+        <GridPanel />
       </div>
     );
   }

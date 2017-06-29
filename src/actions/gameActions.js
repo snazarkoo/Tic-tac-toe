@@ -12,8 +12,16 @@ export function changeCurrentUser(user) {
   return { type: types.CHANGE_CURRENT_USER, user };
 }
 
+export function makeUserWinner(user) {
+  return { type: types.MAKE_USER_WINNER, user };
+}
+
 export function resetGame() {
   return { type: types.RESET_GAME };
+}
+
+export function addStep() {
+  return { type: types.ADD_STEP };
 }
 
 

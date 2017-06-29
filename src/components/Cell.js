@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react';
 
 const Cell = ({ cell, onCellClick }) => {
   return (
-    <td onClick={onCellClick}>{cell.user}</td>
+    <td disabled={!!cell.user} onClick={onCellClick}>{cell.user && cell.user.label}</td>
   );
 };
 
