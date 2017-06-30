@@ -22,8 +22,8 @@ const Grid = ({ onMarkCell, matrix, user, onChangeUser, onResetGame, onAddStep }
   };
 
   return (
-    <div>
-      <table className="table">
+    <div className="game-table">
+      <table disabled={user.isWinner}>
         <tbody>
           {matrix.map(createRow)}
         </tbody>
@@ -37,6 +37,7 @@ Grid.propTypes = {
   onMarkCell: PropTypes.func.isRequired,
   onResetGame: PropTypes.func.isRequired,
   onChangeUser: PropTypes.func.isRequired,
+  onAddStep: PropTypes.func.isRequired,
   user: PropTypes.object.isRequired,
   matrix: PropTypes.array.isRequired
 };

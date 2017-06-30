@@ -11,6 +11,7 @@ const ControlPanel = ({ onChangeGridSize, currentUser, onResetGame, size, gameSt
 
   return (
     <div className="control-panel">
+      <h3>Tic-tac-toe</h3>
       <select onChange={onTodoClick} value={size}>
         {utils.getGridTypeList().map(type =>
           <option value={type.size}
@@ -19,7 +20,7 @@ const ControlPanel = ({ onChangeGridSize, currentUser, onResetGame, size, gameSt
           </option>
         )}
       </select>
-      <div>
+      <div className="users-switch">
         <div>
           <span className={currentUser.label === 'X' ? 'selected' : ''}>Player X</span>
         </div>
@@ -27,7 +28,7 @@ const ControlPanel = ({ onChangeGridSize, currentUser, onResetGame, size, gameSt
           <span className={currentUser.label === 'O' ? 'selected': ''}>Player O</span>
         </div>
       </div>
-      <div>
+      <div className="game-status">
         {gameStatus}
       </div>
     </div>
@@ -38,7 +39,8 @@ ControlPanel.propTypes = {
   onChangeGridSize: PropTypes.func.isRequired,
   onResetGame: PropTypes.func.isRequired,
   currentUser: PropTypes.object.isRequired,
-  size: PropTypes.number.isRequired
+  size: PropTypes.number.isRequired,
+  gameStatus: PropTypes.string.isRequired
 };
 
 function mapStateToProps(state) {

@@ -1,13 +1,40 @@
 /* Styles */
 #app {
   font: 14px 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  color: #4d4d4d;
-  min-width: 550px;
-  max-width: 850px;
-  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+}
+
+.main-panel {
+  width: 300px;
+  background: #f8f8f8;
+  padding: 10px;
+}
+
+h3, .game-status {
+  text-align: center;
+}
+
+.game-status {
+  color: #999;
+  font-size: 12px;
+}
+
+.users-switch {
+  display: flex;
+  justify-content: center;
+}
+
+.users-switch > div {
+  margin: 5px;
+}
+
+.game-table {
+  text-align: center;
 }
 
 table {
+  margin: 25px auto;
   border-collapse: collapse;
 }
 
@@ -18,12 +45,41 @@ table, td, th {
 th, td {
   width: 40px;
   height: 40px;
+  border: 1pt solid black;
+  vertical-align: middle;
+  text-align: center;
 }
 
+table[disabled],
 td[disabled] {
   pointer-events: none;
 }
 
+td.rightDiag {
+  pointer-events: none;
+  background: linear-gradient(to right bottom, #ffffff 0%,#ffffff 49.9%,#000000 52%,#000000 51%,#ffffff 51.1%,#ffffff 100%);
+}
+
+td.leftDiag {
+  pointer-events: none;
+  background: linear-gradient(to right top, #ffffff 0%,#ffffff 49.9%,#000000 52%,#000000 51%,#ffffff 51.1%,#ffffff 100%);
+}
+
+td.row {
+  pointer-events: none;
+  background: linear-gradient(to bottom, #ffffff 0%,#ffffff 49.9%,#000000 52%,#000000 51%,#ffffff 51.1%,#ffffff 100%);
+}
+
+td.column {
+  pointer-events: none;
+  background: linear-gradient(to left, #ffffff 0%,#ffffff 49.9%,#000000 52%,#000000 51%,#ffffff 51.1%,#ffffff 100%);
+}
+
+td.user-x {
+  color: orangered;
+}
+
 .control-panel span.selected {
   text-decoration: underline;
+  font-weight: 600;
 }

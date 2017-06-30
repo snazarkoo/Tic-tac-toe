@@ -5,7 +5,7 @@ import GridPanel from "./GridPanel";
 class App extends React.Component {
   render() {
     return (
-      <div>
+      <div className="main-panel">
         <ControlPanel />
         <GridPanel />
       </div>

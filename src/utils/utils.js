@@ -16,12 +16,24 @@ const GRID_TYPE_LIST = [
   }
 ];
 
+export const USER_X = 'X';
+export const USER_O = 'O';
+
 function createDataCell(rowIndex, columnIndex) {
   return {
     id: `${rowIndex}${columnIndex}`,
     rowIndex,
     columnIndex,
     user: null
+  };
+}
+
+function createDataState() {
+  return {
+    cells: [],
+    count: 0,
+    user: null,
+    type: ''
   };
 }
 
@@ -43,80 +55,69 @@ export function getGridTypeList() {
   return GRID_TYPE_LIST;
 }
 
-export function checkWinner(matrix, cb) {
+export function checkWinner(matrix) {
   const combinations = {
-    'rows': {},
-    'columns': {},
-    'diagonal1': {
-      state: {
-        count: 0,
-        user: null
-      }
+    'row': {},
+    'column': {},
+    'leftDiag': {
+      state: createDataState()
     },
-    'diagonal2': {
-      state: {
-        count: 0,
-        user: null
-      }
+    'rightDiag': {
+      state: createDataState()
     }
   };
 
   let counter = (combinations, type, i, j) => {
-    if (matrix[i][j].user) {
-      if (!combinations[type].state.user) {
-        combinations[type].state.user = matrix[i][j].user;
-        combinations[type].state.count++;
+    const state = combinations[type].state;
+    const cell = Object.assign({}, matrix[i][j], {type});
+
+    if (cell.user) {
+      if (!state.user) {
+        state.user = cell.user;
+        state.count++;
+        state.cells.push(cell);
       } else {
-        if (combinations[type].state.user.label === matrix[i][j].user.label) {
-          combinations[type].state.count++;
-          if (combinations[type].state.count === matrix[0].length)  {
-            return combinations[type].state;
+        if (state.user.label === cell.user.label) {
+          state.count++;
+          state.cells.push(cell);
+
+          if (state.count === matrix[0].length)  {
+            return state;
           }
         }
       }
     }
   };
 
-  const showWiiner = (result) => {
-    console.log(result);
-    alert(`Winner ${result.user}`);
-  };
-
   for (let i=0; i < matrix[0].length; i++) {
 
-    let state = {
-      count: 0,
-      user: null
-    };
-
     for (let prop in combinations) {
-      if (prop === 'rows' || prop === 'columns') {
-        combinations[prop].state = Object.assign({}, state);
+      if (prop === 'row' || prop === 'column') {
+        combinations[prop].state = createDataState();
       }
     }
 
     for (let j=0; j < matrix[0].length; j++) {
       //ROWS
-      let result = counter(combinations, 'rows', i, j);
+      let result = counter(combinations, 'row', i, j);
 
-      if(result) { console.log('rows'); return result; }
+      if(result) { return result; }
 
       //COLUMNS
-      result = counter(combinations, 'columns', j, i);
+      result = counter(combinations, 'column', j, i);
 
-      if(result) { console.log('COLUMNS'); return result; }
+      if(result) { return result; }
 
       //DIAGONAL1
       if (i === j) {
-        result = counter(combinations, 'diagonal1', i, j);
-        if(result) { console.log('diag1'); return result; }
+        result = counter(combinations, 'leftDiag', i, j);
+        if(result) {  return result; }
       }
       //DIAGONAL2
       if (j === (matrix[i].length - i - 1)) {
-        result = counter(combinations, 'diagonal2', i, j);
-        if(result) { console.log('diag2'); return result; }
+        result = counter(combinations, 'rightDiag', i, j);
+        if(result) { return result; }
       }
     }
   }
-  console.log(matrix);
 }

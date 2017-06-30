@@ -24,5 +24,9 @@ export function addStep() {
   return { type: types.ADD_STEP };
 }
 
+export function markCombination(cellList) {
+  return { type: types.MARK_COMBINATION,  cellList};
+}
+
 
 

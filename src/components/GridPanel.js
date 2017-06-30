@@ -6,7 +6,8 @@ import {
   resetGame,
   changeCurrentUser,
   addStep,
-  makeUserWinner
+  makeUserWinner,
+  markCombination
 } from '../actions/gameActions';
 import * as utils from '../utils/utils';
 
@@ -16,11 +17,12 @@ export class GridPanel extends React.Component {
   }
 
   componentDidUpdate() {
-    if (!this.props.user.isWinner) {
+    if (!this.props.user.isWinner && (this.props.step >= this.props.gridSize)) {
       const winnerResults = utils.checkWinner(this.props.matrix);
 
       if (winnerResults) {
         this.props.onMakeUserWinner(winnerResults.user);
+        this.props.onMarkCombination(winnerResults.cells);
       }
     }
   }
@@ -40,17 +42,25 @@ export class GridPanel extends React.Component {
 }
 
 GridPanel.propTypes = {
+  onAddStep: PropTypes.func.isRequired,
   onMarkCell: PropTypes.func.isRequired,
+  onMakeUserWinner: PropTypes.func.isRequired,
   onResetGame: PropTypes.func.isRequired,
   onChangeUser: PropTypes.func.isRequired,
   user: PropTypes.object.isRequired,
-  matrix: PropTypes.array.isRequired
+  matrix: PropTypes.array.isRequired,
+  step: PropTypes.number.isRequired,
+  gridSize: PropTypes.number.isRequired
 };
 
 function mapStateToProps(state) {
+  const { matrix, user, step, gridSize } = state;
+
   return {
-    matrix: state.matrix,
-    user: state.user
+    matrix,
+    user,
+    step,
+    gridSize
   };
 }
 
@@ -60,7 +70,8 @@ function mapDispatchToProps(dispatch) {
     onChangeUser: (user) => dispatch(changeCurrentUser(user)),
     onResetGame: (user) => dispatch(resetGame(user)),
     onAddStep: () => dispatch(addStep()),
-    onMakeUserWinner: (user) => dispatch(makeUserWinner(user))
+    onMakeUserWinner: (user) => dispatch(makeUserWinner(user)),
+    onMarkCombination: (cells) => dispatch(markCombination(cells))
   };
 }
 
