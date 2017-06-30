@@ -1,4 +1,5 @@
 import * as types from './actionTypes';
+import * as utils from '../utils/utils';
 
 export function changeGridSize(size) {
   return { type: types.CHANGE_GRID_SIZE, size };
@@ -26,6 +27,23 @@ export function addStep() {
 
 export function markCombination(cellList) {
   return { type: types.MARK_COMBINATION,  cellList};
+}
+
+export function updateData(cell, currentUser) {
+  return (dispatch, getState) => {
+    dispatch(markCell(cell, currentUser));
+    dispatch(changeCurrentUser(currentUser));
+    dispatch(addStep(currentUser));
+
+    if (!getState().user.isWinner && (getState().step >= getState().gridSize)) {
+      const winnerResults = utils.checkWinner(getState().matrix);
+
+      if (winnerResults) {
+        dispatch(makeUserWinner(winnerResults.user));
+        dispatch(markCombination(winnerResults.cells));
+      }
+    }
+  };
 }
 
 

@@ -1,77 +1,58 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
-import Grid from './Grid';
-import {
-  markCell,
-  resetGame,
-  changeCurrentUser,
-  addStep,
-  makeUserWinner,
-  markCombination
-} from '../actions/gameActions';
-import * as utils from '../utils/utils';
+import { resetGame, updateData } from '../actions/gameActions';
+import Cell from './Cell';
 
-export class GridPanel extends React.Component {
-  constructor(props, context) {
-    super(props, context);
-  }
+const GridPanel = ({ matrix, user, onResetGame, onUpdateData }) => {
 
-  componentDidUpdate() {
-    if (!this.props.user.isWinner && (this.props.step >= this.props.gridSize)) {
-      const winnerResults = utils.checkWinner(this.props.matrix);
+  let onCellClick = (cell) => {
+    onUpdateData(cell, user);
+  };
 
-      if (winnerResults) {
-        this.props.onMakeUserWinner(winnerResults.user);
-        this.props.onMarkCombination(winnerResults.cells);
-      }
-    }
-  }
+  let createCell = (cell, cellIndex) => {
+    return <Cell key={cellIndex}  cell={cell} onCellClick={() => onCellClick(cell)} />;
+  };
 
-  render() {
+  const createRow = (row, rowIndex) => {
     return (
-      <Grid
-        onMarkCell={this.props.onMarkCell}
-        matrix={this.props.matrix}
-        user={this.props.user}
-        onChangeUser={this.props.onChangeUser}
-        onResetGame={this.props.onResetGame}
-        onAddStep={this.props.onAddStep}
-      />
+      <tr key={rowIndex}>
+        {row.map(createCell)}
+      </tr>
     );
-  }
-}
+  };
+
+  return (
+    <div className="game-table">
+      <table disabled={user.isWinner}>
+        <tbody>
+        {matrix.map(createRow)}
+        </tbody>
+      </table>
+      <button onClick={onResetGame}>New Game</button>
+    </div>
+  );
+};
 
 GridPanel.propTypes = {
-  onAddStep: PropTypes.func.isRequired,
-  onMarkCell: PropTypes.func.isRequired,
-  onMakeUserWinner: PropTypes.func.isRequired,
+  onUpdateData: PropTypes.func.isRequired,
   onResetGame: PropTypes.func.isRequired,
-  onChangeUser: PropTypes.func.isRequired,
   user: PropTypes.object.isRequired,
-  matrix: PropTypes.array.isRequired,
-  step: PropTypes.number.isRequired,
-  gridSize: PropTypes.number.isRequired
+  matrix: PropTypes.array.isRequired
 };
 
 function mapStateToProps(state) {
-  const { matrix, user, step, gridSize } = state;
+  const { matrix, user } = state;
 
   return {
     matrix,
-    user,
-    step,
-    gridSize
+    user
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    onMarkCell: (id, user) => dispatch(markCell(id, user)),
-    onChangeUser: (user) => dispatch(changeCurrentUser(user)),
-    onResetGame: (user) => dispatch(resetGame(user)),
-    onAddStep: () => dispatch(addStep()),
-    onMakeUserWinner: (user) => dispatch(makeUserWinner(user)),
-    onMarkCombination: (cells) => dispatch(markCombination(cells))
+    onResetGame: () => dispatch(resetGame()),
+    onUpdateData: (cell, user) => dispatch(updateData(cell, user))
   };
 }
 
