@@ -26,7 +26,7 @@ export function addStep() {
 }
 
 export function markCombination(cellList) {
-  return { type: types.MARK_COMBINATION,  cellList};
+  return { type: types.MARK_COMBINATION, cellList };
 }
 
 export function updateData(cell, currentUser) {
@@ -45,6 +45,3 @@ export function updateData(cell, currentUser) {
     }
   };
 }
-
-
-

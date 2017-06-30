@@ -5,7 +5,7 @@ export default {
   grid: utils.createGrid(3),
   user: {
     label: 'X',
-    isWinner: false
+    isWinner: false,
   },
-  step: 0
+  step: 0,
 };

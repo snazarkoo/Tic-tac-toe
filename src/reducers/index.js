@@ -9,12 +9,13 @@ const appReducer = combineReducers({
   gridSize,
   matrix,
   user,
-  step
+  step,
 });
 
+/* eslint-disable no-param-reassign */
 const rootReducer = (state, action) => {
   if (action.type === types.RESET_GAME) {
-    state = action.reset;
+    state = {};
   }
 
   return appReducer(state, action);
