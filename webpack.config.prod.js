@@ -13,12 +13,12 @@ export default {
   entry: './src/index',
   target: 'web',
   output: {
-    path: __dirname + '/dist', // Note: Physical files are only output by the production build task `npm run build`.
+    path: __dirname + '/docs', // Note: Physical files are only output by the production build task `npm run build`.
     publicPath: '/',
     filename: 'bundle.js'
   },
   devServer: {
-    contentBase: './dist'
+    contentBase: './docs'
   },
   plugins: [
     new webpack.optimize.OccurenceOrderPlugin(),
